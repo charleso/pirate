@@ -1,7 +1,9 @@
 package pirate.example
 
-import scalaz._, Scalaz._
-import pirate._, Pirate._
+import scalaz._
+import Scalaz._
+import pirate._
+import Pirate._
 
 object MthExample {
   sealed trait Args
@@ -13,11 +15,11 @@ object MthExample {
   case object Help extends Args
   case object Version extends Args
 
-  val example: Parse[Args] = (Example |*| (
+  val example: Parse[Args] = (Example |*| ((
     switch(short('s'), empty)
   , flag[String](short('c'), description("STRING"))
   , flag[Int](short('n'), description("INT"))
-  )).map(x => x)
+  ))).map(x => x)
 
   val all = switch(short('h'), empty).as[Args](Help) ||| switch(short('v'), empty).as(Version) ||| example
 

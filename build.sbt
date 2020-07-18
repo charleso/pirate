@@ -1,6 +1,6 @@
 ThisBuild / organization := "io.mth"
 ThisBuild / version := "1.0.0"
-ThisBuild / scalaVersion := "2.13.0"
+ThisBuild / scalaVersion := "2.13.3"
 
 lazy val hedgehogVersion = "64eccc9ca7dbe7a369208a14a97a25d7ccbbda67"
 lazy val hedgehog = Seq(
@@ -13,7 +13,7 @@ lazy val pirate =
   (project in file("."))
     .settings(name := "pirate")
     .settings(
-      crossScalaVersions := Seq("2.11.12", "2.12.10", scalaVersion.value)
+      crossScalaVersions := Seq("2.11.12", "2.12.12", scalaVersion.value)
     , scalacOptions := Seq(
           "-deprecation"
         , "-unchecked"
@@ -22,10 +22,22 @@ lazy val pirate =
         , "-Ywarn-value-discard"
         , "-Xlint"
         , "-Xfatal-warnings"
-      ) ++ (if (scalaBinaryVersion.value == "2.13") Seq("-Wunused:imports") else Seq("-Ywarn-unused-import"))
+      ) ++ (
+        if (scalaBinaryVersion.value == "2.13")
+          Seq("-Wunused:imports", "-Wconf:cat=lint-byname-implicit:s")
+        else
+          Seq("-Ywarn-unused-import")
+      )
     , scalacOptions in (Compile, console) := Seq("-language:_", "-feature")
     , scalacOptions in (Test, console) := Seq("-language:_", "-feature")
     , scalacOptions in Test := Seq("-Yrangepos")
+    , unmanagedSourceDirectories in Compile ++= {
+        val sharedSourceDir = baseDirectory.value / "src/main"
+        if (scalaVersion.value.startsWith("2.13"))
+          Seq(sharedSourceDir / "scala-2.13")
+        else
+          Seq(sharedSourceDir / "scala-2.13-")
+      }
     , unmanagedSourceDirectories in Test ++= {
         val sharedSourceDir = baseDirectory.value / "src/test"
         if (scalaVersion.value.startsWith("2.13"))

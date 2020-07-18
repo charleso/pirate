@@ -1,7 +1,8 @@
 package pirate.example
 
+import pirate._
+import Pirate._
 import scalaz._
-import pirate._, Pirate._
 
 // FIX actually implement this, currently just some hard coded examples that use the internals.
 object InteractiveExample {

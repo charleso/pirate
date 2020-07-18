@@ -1,10 +1,12 @@
 package pirate.example
 
-import pirate._, Pirate._
-import scalaz._, Scalaz._, effect.IO
-
 import java.io.File
 
+import pirate._
+import Pirate._
+import scalaz._
+import Scalaz._
+import effect.IO
 import hedgehog._
 import hedgehog.runner.{example => exampleTest, _}
 
